@@ -38,7 +38,7 @@ const Login = () => {
         onSubmit: async (values, helpers) => {
             try {
                 await login(values.username, values.password);
-                navigate('/home');
+                navigate('/dashboard/welcome');
             } catch (err) {
                 helpers.setStatus({ success: false });
                 helpers.setErrors({ submit: err.message });
