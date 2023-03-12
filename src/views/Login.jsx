@@ -37,8 +37,12 @@ const Login = () => {
         }),
         onSubmit: async (values, helpers) => {
             try {
-                await login(values.username, values.password);
+                let { data } = await login(values.username, values.password);
                 navigate('/dashboard/welcome');
+                localStorage.setItem('username', data.username)
+                localStorage.setItem('userid', data.userid)
+                localStorage.setItem('token', data.token)
+                localStorage.setItem('expiration', data.expiration)
             } catch (err) {
                 helpers.setStatus({ success: false });
                 helpers.setErrors({ submit: err.message });
