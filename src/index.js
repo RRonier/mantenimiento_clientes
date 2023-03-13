@@ -5,10 +5,13 @@ import reportWebVitals from './reportWebVitals';
 
 import { Router } from "./components/Router"
 import { RouterProvider } from 'react-router-dom';
+import { SnackbarProvider } from 'notistack';
 
 ReactDOM.render(
   <React.StrictMode>
-    <RouterProvider router={Router} />
+    <SnackbarProvider maxSnack={1} autoHideDuration={2000}>
+      <RouterProvider router={Router} />
+    </SnackbarProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
