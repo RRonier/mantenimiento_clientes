@@ -4,8 +4,11 @@ import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace"
 import SearchIcon from '@mui/icons-material/Search';
 import Table from "../components/Table"
 import { CustomButton } from '../components/CustomButton';
+import { useNavigate } from 'react-router-dom';
 
 export const ConsultaClientes = () => {
+    const navigate = useNavigate()
+
     return (
         <Container>
             <Paper elevation={1} sx={{
@@ -23,11 +26,20 @@ export const ConsultaClientes = () => {
                 }}>
                     <Typography variant='h6'>Consulta de clientes</Typography>
                     <div>
-                        <CustomButton sx={{
-                            marginRight: 2
-                        }} variant='contained' startIcon={<AddIcon />} label="Agregar" />
-                        <CustomButton variant='contained' startIcon={<KeyboardBackspaceIcon />} label="Regresar" />
-                        {/* <Button variant='contained' startIcon={<KeyboardBackspaceIcon />}>Regresar</Button> */}
+                        <CustomButton
+                            sx={{
+                                marginRight: 2
+                            }}
+                            variant='contained'
+                            startIcon={<AddIcon />}
+                            label="Agregar"
+                        />
+                        <CustomButton
+                            variant='contained'
+                            startIcon={<KeyboardBackspaceIcon />}
+                            label="Regresar"
+                            onClick={() => navigate('/dashboard/welcome')}
+                        />
                     </div>
                 </div>
                 <Divider />
