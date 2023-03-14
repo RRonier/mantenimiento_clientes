@@ -83,7 +83,13 @@ export const MantenimientoClientes = () => {
                 >
                     <div style={{ display: "flex", alignItems: "flex-end" }}>
                         <PersonIcon
-                            style={{ fontSize: 40, marginRight: 5, color: grey[600] }}
+                            style={{
+                                fontSize: 40,
+                                marginRight: 5,
+                                color: grey[600],
+                                border: `1px solid ${grey[400]}`,
+                                borderRadius: '50%'
+                            }}
                         />
                         <Typography variant="h6">Mantenimiento de clientes</Typography>
                     </div>
@@ -108,16 +114,17 @@ export const MantenimientoClientes = () => {
                 <Divider />
                 <div
                     style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        paddingLeft: 15,
-                        paddingRight: 15,
-                        paddingTop: 10,
-                        paddingBottom: 10,
+                        display: "grid",
+                        gridTemplateColumns: "repeat(3, 1fr)",
+                        gridGap: "1rem",
+                        marginLeft: 15,
+                        marginRight: 15,
+                        marginTop: 10
                     }}
                 >
                     <TextField
                         required
+                        fullWidth
                         id="outlined-required"
                         label="Identificacion"
                         variant="outlined"
@@ -127,6 +134,7 @@ export const MantenimientoClientes = () => {
                     />
                     <TextField
                         required
+                        fullWidth
                         id="outlined-required"
                         label="Nombre"
                         name='nombre'
@@ -138,6 +146,7 @@ export const MantenimientoClientes = () => {
                         onChange={handleForm}
                     />
                     <TextField
+                        fullWidth
                         id="outlined-required"
                         label="Apellidos"
                         name='apellidos'
@@ -145,21 +154,10 @@ export const MantenimientoClientes = () => {
                         value={formValues.apellidos}
                         onChange={handleForm}
                     />
-                </div>
-                <div
-                    style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        paddingLeft: 15,
-                        paddingRight: 15,
-                        paddingTop: 10,
-                        paddingBottom: 10,
-                        border: '1px dashed red'
-                    }}
-                >
                     <FormControl sx={{ minWidth: 245 }}>
                         <InputLabel id="demo-simple-select-helper-label">Genero *</InputLabel>
                         <Select
+                            fullWidth
                             labelId="demo-simple-select-helper-label"
                             id="demo-simple-select-helper"
                             label="Genero"
@@ -176,27 +174,19 @@ export const MantenimientoClientes = () => {
                         </Select>
                     </FormControl>
                     <CustomDatePicker
+                        fullWidth
                         name="fNacimiento"
                         value={formValues.fNacimiento}
                         onChange={(newValue) => setValue(newValue)}
                     />
                     <CustomDatePicker
+                        fullWidth
                         name="fAfiliacion"
                         value={formValues.fAfiliacion}
                         onChange={(newValue) => setValue(newValue)}
                     />
-                </div>
-                <div
-                    style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        paddingLeft: 15,
-                        paddingRight: 15,
-                        paddingTop: 10,
-                        paddingBottom: 10,
-                    }}
-                >
                     <TextField
+                        fullWidth
                         id="outlined-required"
                         label="Telefono Celular"
                         name='celular'
@@ -205,6 +195,7 @@ export const MantenimientoClientes = () => {
                         onChange={handleForm}
                     />
                     <TextField
+                        fullWidth
                         id="outlined-required"
                         label="Telefono Otro"
                         name='otroTelefono'
@@ -218,6 +209,7 @@ export const MantenimientoClientes = () => {
                     <FormControl sx={{ minWidth: 245 }}>
                         <InputLabel id="demo-simple-select-helper-label">Interes *</InputLabel>
                         <Select
+                            fullWidth
                             labelId="demo-simple-select-helper-label"
                             id="demo-simple-select-helper"
                             label="Intereses"
