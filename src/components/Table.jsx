@@ -15,8 +15,7 @@ import {
 import { blue } from "@mui/material/colors"
 import { useSnackbar } from "notistack"
 
-import { listClients, addClient, deleteClient } from "../services/client.service";
-import { getInteresList } from "../services/interes.service";
+import { listClients, deleteClient } from "../services/client.service";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -39,58 +38,29 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function CustomizedTables() {
     const [clients, setClients] = useState([])
-    const [interests, setInterests] = useState([])
 
     const { enqueueSnackbar } = useSnackbar()
 
     let getClientsList = async () => {
         let clientsList = await listClients('', '', localStorage.getItem('userid'))
         setClients(clientsList.data)
-        console.log(clientsList.data)
-    }
-    let getInterestsList = async () => {
-        let interestsList = await getInteresList()
-        console.log(interestsList.data)
-        setInterests(interestsList.data)
     }
 
     useEffect(() => {
         getClientsList()
-        getInterestsList()
     }, []);
 
     const onDeleteClient = async (id) => {
-        const decision = confirm('Are you sure you want to delete?')
+        // eslint-disable-next-line no-restricted-globals
+        const decision = window.confirm('Seguro deseas eliminar a este cliente?')
         if (decision === true) {
             await deleteClient(id)
             getClientsList()
             enqueueSnackbar('Cliente eliminado con exito', { variant: 'success' })
         }
     }
-
-    const onAddClient = async () => {
-        await addClient(
-            {
-                nombre: "Avatar",
-                apellidos: "Sthephen",
-                identificacion: "uu",
-                celular: "+4917655884789",
-                otroTelefono: "+4917655448759",
-                direccion: "string",
-                fNacimiento: "2023-03-09T16:04:19.334Z",
-                fAfiliacion: "2023-03-09T16:04:19.334Z",
-                sexo: "M",
-                resennaPersonal: "string",
-                imagen: "string",
-                interesFK: "47c53f03-87fb-4bc4-8426-d17ef67445e0",
-                usuarioId: "863b5771-88ea-425c-a97b-e2ba5ac67fbe"
-            })
-        await getClientsList()
-        enqueueSnackbar('Cliente agregado con exito', { variant: 'success' })
-    }
     return (
         <>
-            <button onClick={onAddClient}>Click</button>
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                     <TableHead>
