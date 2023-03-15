@@ -7,12 +7,15 @@ import { Router } from "./components/Router"
 import { RouterProvider } from 'react-router-dom';
 import { SnackbarProvider } from 'notistack';
 import { AuthProvider } from './context/auth.context';
+import App from './App';
 
 ReactDOM.render(
   <React.StrictMode>
     <SnackbarProvider maxSnack={1} autoHideDuration={2000}>
       <AuthProvider>
-        <RouterProvider router={Router} />
+        <RouterProvider router={Router}>
+          <App />
+        </RouterProvider>
       </AuthProvider>
     </SnackbarProvider>
   </React.StrictMode>,

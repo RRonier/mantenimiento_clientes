@@ -5,7 +5,7 @@ import { WelcomePage } from '../views/Welcome';
 import { ConsultaClientes } from '../views/ConsultaClientes';
 import { MantenimientoClientes } from '../views/MantenimientoClientes';
 import { ProtectedRoute } from "./ProtectedRoute"
-import App from '../App'
+import Login from "../views/Login"
 
 import {
     createBrowserRouter
@@ -14,7 +14,7 @@ import {
 export const Router = createBrowserRouter([
     {
         path: "/",
-        element: <App />,
+        element: <Login />,
     },
     {
         path: "/register",
