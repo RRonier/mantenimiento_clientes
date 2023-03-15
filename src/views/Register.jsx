@@ -1,7 +1,7 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Box, Button, Link, Stack, TextField, Typography } from '@mui/material';
-import { signUp } from '../services/auth.service';
+import { signUpService } from '../services/auth.service';
 
 const Register = () => {
     const formik = useFormik({
@@ -32,7 +32,7 @@ const Register = () => {
         }),
         onSubmit: async (values, helpers) => {
             try {
-                await signUp(values.username, values.email, values.password)
+                await signUpService(values.username, values.email, values.password)
                 console.log({ nombre: values.username, correo: values.email, password: values.password })
             } catch (err) {
                 helpers.setStatus({ success: false });
