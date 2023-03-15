@@ -7,21 +7,26 @@ import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import AppBar from '@mui/material/AppBar';
+import { useNavigate } from 'react-router-dom';
 
-export const Navbar = () => {
-    const [auth, setAuth] = useState(true);
+export const Navbar = ({ user, logout }) => {
+    // const [auth, setAuth] = useState(true);
     const [anchorEl, setAnchorEl] = useState(null);
+    const navigate = useNavigate()
 
-    const handleChange = (event) => {
-        setAuth(event.target.checked);
-    };
+    // const handleChange = (event) => {
+    //     setAuth(event.target.checked);
+    // };
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleClose = () => {
-        setAnchorEl(null);
+    const handleClose = () => { }
+
+    const handleLogout = () => {
+        logout();
+        navigate("/")
     };
     return (
         <AppBar
@@ -41,17 +46,17 @@ export const Navbar = () => {
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     COMPANIA PRUEBA
                 </Typography>
-                {auth && (
+                {user && (
                     <div style={{ display: 'flex' }}>
                         <p variant="h6" component="p">
-                            Nombre de usuario
+                            {user}
                         </p>
                         <IconButton
                             size="medium"
                             aria-label="account of current user"
                             aria-controls="menu-appbar"
                             aria-haspopup="true"
-                            onClick={handleMenu}
+                            onClick={handleLogout}
                             color="inherit"
                         >
                             <LogoutRoundedIcon />
