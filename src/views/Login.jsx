@@ -1,9 +1,9 @@
-import { useFormik } from 'formik';
+import { useContext } from 'react'
+import { useFormik } from 'formik'
 import * as Yup from 'yup';
 import {
     Box,
     Button,
-    FormHelperText,
     Link,
     Stack,
     TextField,
@@ -14,9 +14,11 @@ import {
 
 import { useNavigate } from 'react-router-dom'
 
-import { login } from '../services/auth.service';
+// import { loginService } from '../services/auth.service';
+import { AuthContext } from '../context/auth.context';
 
 const Login = () => {
+    const { user, loginContext } = useContext(AuthContext)
     const navigate = useNavigate()
 
     const formik = useFormik({
@@ -37,12 +39,8 @@ const Login = () => {
         }),
         onSubmit: async (values, helpers) => {
             try {
-                let { data } = await login(values.username, values.password);
-                navigate('/dashboard/welcome');
-                localStorage.setItem('username', data.username)
-                localStorage.setItem('userid', data.userid)
-                localStorage.setItem('token', data.token)
-                localStorage.setItem('expiration', data.expiration)
+                await loginContext(values.username, values.password)
+                navigate('/dashboard/welcome')
             } catch (err) {
                 helpers.setStatus({ success: false });
                 helpers.setErrors({ submit: err.message });

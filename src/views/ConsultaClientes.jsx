@@ -5,9 +5,16 @@ import SearchIcon from '@mui/icons-material/Search';
 import Table from "../components/Table"
 import { CustomButton } from '../components/CustomButton';
 import { useNavigate } from 'react-router-dom';
+import { getClient } from '../services/client.service';
+import { enqueueSnackbar } from 'notistack';
 
 export const ConsultaClientes = () => {
     const navigate = useNavigate()
+
+    const onGetClient = async (clientId) => {
+        let client = await getClient(clientId)
+        console.log(client)
+    }
 
     return (
         <Container>
@@ -33,6 +40,7 @@ export const ConsultaClientes = () => {
                             variant='contained'
                             startIcon={<AddIcon />}
                             label="Agregar"
+                            onClick={() => navigate('/dashboard/mantenimiento')}
                         />
                         <CustomButton
                             variant='contained'
@@ -68,8 +76,12 @@ export const ConsultaClientes = () => {
                         variant='outlined'
                         fullWidth
                     />
-                    <IconButton aria-label="search">
-                        <SearchIcon />
+                    <IconButton aria-label="search" onClick={onGetClient}>
+                        <SearchIcon style={{
+                            border: '1px solid black',
+                            borderRadius: '50%',
+                            padding: '20%'
+                        }} />
                     </IconButton>
                 </div>
                 <Divider />

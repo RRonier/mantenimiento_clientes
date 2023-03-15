@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
+import { useFormik } from 'formik';
+import { useNavigate } from "react-router-dom";
 import {
     Container,
     Paper,
@@ -14,16 +16,21 @@ import {
 import { CustomButton } from "../components/CustomButton";
 import SaveIcon from "@mui/icons-material/Save";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-import { useNavigate } from "react-router-dom";
 import PersonIcon from "@mui/icons-material/Person";
 import { grey } from "@mui/material/colors";
 import CustomDatePicker from "../components/CustomDatePicker";
 import { getInteresList } from "../services/interes.service"
+import { addClient, getClient } from '../services/client.service';
+import dayjs from 'dayjs';
+import * as Yup from 'yup';
+import { AuthContext } from '../context/auth.context';
+import { enqueueSnackbar } from 'notistack';
 
 export const MantenimientoClientes = () => {
     const [interestsList, setInterestsList] = useState([])
     const navigate = useNavigate();
-    //----------------------------------------------------------------------
+    const { user } = useContext(AuthContext)
+
     const [formValues, setFormValues] = useState({
         nombre: "",
         apellidos: "",
@@ -36,7 +43,7 @@ export const MantenimientoClientes = () => {
         sexo: "",
         resennaPersonal: "",
         interesFK: "",
-        usuarioId: localStorage.getItem("userid")
+        usuarioId: user.id
     })
 
     const handleForm = (event) => {
@@ -47,17 +54,72 @@ export const MantenimientoClientes = () => {
         }))
     }
 
-    const createUser = () => console.log(formValues)
+    const createUser = async () => {
+        await addClient(
+            {
+                ...formValues,
+                fNacimiento: dayjs(formValues.fNacimiento).toISOString(),
+                fAfiliacion: dayjs(formValues.fAfiliacion).toISOString(),
+                imagen: "string"
+            })
+        navigate("/dashboard/consulta")
+        enqueueSnackbar('Cliente agregado con exito', { variant: 'success' })
+    }
     //----------------------------------------------------------------------
+    const onBDateChange = (newValue) => {
+        setFormValues((state) => ({
+            ...state,
+            fNacimiento: dayjs(newValue.$d),
+        }))
+    }
+    const onADateChange = (newValue) => {
+        setFormValues((state) => ({
+            ...state,
+            fAfiliacion: dayjs(newValue.$d)
+        }))
+    }
 
-    let getInterestsList = async () => {
+    const getInterestsList = async () => {
         let interestsList = await getInteresList()
+        console.log(interestsList.data)
         setInterestsList(interestsList.data)
     }
 
     useEffect(() => {
         getInterestsList()
     }, [])
+
+    const formik = useFormik({
+        initialValues: {
+            username: '',
+            password: '',
+            submit: null
+        },
+        validationSchema: Yup.object({
+            username: Yup
+                .string()
+                .max(255)
+                .required('El usuario es obligatorio'),
+            password: Yup
+                .string()
+                .max(255)
+                .required('La contraseña es obligatoria')
+        }),
+        onSubmit: async (values, helpers) => {
+            try {
+                // let { data } = await loginService(values.username, values.password);
+                navigate('/dashboard/welcome');
+                localStorage.setItem('username', data.username)
+                localStorage.setItem('userid', data.userid)
+                localStorage.setItem('token', data.token)
+                localStorage.setItem('expiration', data.expiration)
+            } catch (err) {
+                helpers.setStatus({ success: false });
+                helpers.setErrors({ submit: err.message });
+                helpers.setSubmitting(false);
+            }
+        }
+    });
 
     return (
         <Container>
@@ -158,6 +220,7 @@ export const MantenimientoClientes = () => {
                         <InputLabel id="demo-simple-select-helper-label">Genero *</InputLabel>
                         <Select
                             fullWidth
+                            required
                             labelId="demo-simple-select-helper-label"
                             id="demo-simple-select-helper"
                             label="Genero"
@@ -168,25 +231,27 @@ export const MantenimientoClientes = () => {
                             <MenuItem value="">
                                 <em>Seleccione</em>
                             </MenuItem>
-                            <MenuItem value={'Femenino'}>Femenino</MenuItem>
-                            <MenuItem value={'Masculino'}>Masculino</MenuItem>
-                            <MenuItem value={'Otros'}>Otros</MenuItem>
+                            <MenuItem value={'F'}>F</MenuItem>
+                            <MenuItem value={'M'}>M</MenuItem>
                         </Select>
                     </FormControl>
                     <CustomDatePicker
-                        fullWidth
-                        name="fNacimiento"
+                        label="Fecha de nacimiento"
                         value={formValues.fNacimiento}
-                        onChange={(newValue) => setValue(newValue)}
+                        // fullWidth
+                        // name="fNacimiento"
+                        onChange={onBDateChange}
                     />
                     <CustomDatePicker
-                        fullWidth
-                        name="fAfiliacion"
+                        label="Fecha de afiliacion"
+                        // fullWidth
+                        // name="fAfiliacion"
                         value={formValues.fAfiliacion}
-                        onChange={(newValue) => setValue(newValue)}
+                        onChange={onADateChange}
                     />
                     <TextField
                         fullWidth
+                        required
                         id="outlined-required"
                         label="Telefono Celular"
                         name='celular'
@@ -196,6 +261,7 @@ export const MantenimientoClientes = () => {
                     />
                     <TextField
                         fullWidth
+                        required
                         id="outlined-required"
                         label="Telefono Otro"
                         name='otroTelefono'
