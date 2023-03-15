@@ -6,7 +6,8 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState({
-        name: ""
+        name: "",
+        id: "",
     });
     const [isLogged, setIsLogged] = useState(false)
 
@@ -16,7 +17,7 @@ export const AuthProvider = ({ children }) => {
         // setLoginError(null)
         try {
             let { data } = await loginService(username, password)
-            setUser({ name: data.username })
+            setUser({ name: data.username, id: data.userid })
             setIsLogged(true)
             localStorage.setItem('username', data.username)
             localStorage.setItem('userid', data.userid)
