@@ -1,4 +1,3 @@
-import * as React from "react";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import {
     Typography,
@@ -17,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
-function CustomDrawer() {
+function CustomDrawer({ user }) {
     const navigate = useNavigate()
 
     const drawer = (
@@ -33,7 +32,7 @@ function CustomDrawer() {
                 <AccountCircleIcon style={{ fontSize: 200 }} />
             </List>
             <Typography sx={{ textAlign: "center" }}>
-                Nombre de usuario
+                {user}
             </Typography>
             <Divider />
             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
