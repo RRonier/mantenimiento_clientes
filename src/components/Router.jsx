@@ -3,6 +3,8 @@ import Home from '../views/Dashboard';
 import { ErrorPage } from '../views/ErrorPage';
 import { WelcomePage } from '../views/Welcome';
 import { ConsultaClientes } from '../views/ConsultaClientes';
+import { MantenimientoClientes } from '../views/MantenimientoClientes';
+import { ProtectedRoute } from "./ProtectedRoute"
 import App from '../App'
 
 import {
@@ -24,12 +26,23 @@ export const Router = createBrowserRouter([
         children: [
             {
                 path: "welcome",
-                element: <WelcomePage />,
+                element: <ProtectedRoute>
+                    <WelcomePage />
+                </ProtectedRoute>,
                 errorElement: <ErrorPage />,
             },
             {
                 path: "consulta",
-                element: <ConsultaClientes />,
+                element: <ProtectedRoute>
+                    <ConsultaClientes />
+                </ProtectedRoute>,
+                errorElement: <ErrorPage />,
+            },
+            {
+                path: "mantenimiento",
+                element: <ProtectedRoute>
+                    <MantenimientoClientes />
+                </ProtectedRoute >,
                 errorElement: <ErrorPage />,
             },
         ]
