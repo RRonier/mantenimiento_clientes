@@ -6,11 +6,14 @@ import reportWebVitals from './reportWebVitals';
 import { Router } from "./components/Router"
 import { RouterProvider } from 'react-router-dom';
 import { SnackbarProvider } from 'notistack';
+import { AuthProvider } from './context/auth.context';
 
 ReactDOM.render(
   <React.StrictMode>
     <SnackbarProvider maxSnack={1} autoHideDuration={2000}>
-      <RouterProvider router={Router} />
+      <AuthProvider>
+        <RouterProvider router={Router} />
+      </AuthProvider>
     </SnackbarProvider>
   </React.StrictMode>,
   document.getElementById('root')
