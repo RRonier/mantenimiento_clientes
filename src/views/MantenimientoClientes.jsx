@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from 'react'
 import { useFormik } from 'formik';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
     Container,
     Paper,
@@ -20,7 +20,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import { grey } from "@mui/material/colors";
 import CustomDatePicker from "../components/CustomDatePicker";
 import { getInteresList } from "../services/interes.service"
-import { addClient, getClient } from '../services/client.service';
+import { addClient, getClient, updateClient } from '../services/client.service';
 import dayjs from 'dayjs';
 import * as Yup from 'yup';
 import { AuthContext } from '../context/auth.context';
@@ -29,6 +29,7 @@ import { enqueueSnackbar } from 'notistack';
 export const MantenimientoClientes = () => {
     const [interestsList, setInterestsList] = useState([])
     const navigate = useNavigate();
+    const params = useParams()
     const { user } = useContext(AuthContext)
 
     const [formValues, setFormValues] = useState({
@@ -81,45 +82,67 @@ export const MantenimientoClientes = () => {
 
     const getInterestsList = async () => {
         let interestsList = await getInteresList()
-        console.log(interestsList.data)
         setInterestsList(interestsList.data)
+    }
+
+    const getUserData = async () => {
+        let clientData = await getClient(params.id)
+        console.log(clientData.data)
+        let fNacimiento = dayjs(clientData.data.fNacimiento).format('YYYY-MM-DD')
+        let fAfiliacion = dayjs(clientData.data.fAfiliacion).format('YYYY-MM-DD')
+        console.log(user.id)
+        setFormValues({
+            ...clientData.data,
+            celular: clientData.data.telefonoCelular,
+            resennaPersonal: clientData.data.resenaPersonal,
+            interesFK: clientData.data.interesesId,
+            fNacimiento: dayjs(fNacimiento),
+            fAfiliacion: dayjs(fAfiliacion),
+            usuarioId: user.id
+        })
+    }
+
+    const updateUserData = async () => {
+        await updateClient(formValues)
+        enqueueSnackbar('Usuario actualizado correctamente', { variant: 'success' })
     }
 
     useEffect(() => {
         getInterestsList()
+        getUserData()
     }, [])
 
-    const formik = useFormik({
-        initialValues: {
-            username: '',
-            password: '',
-            submit: null
-        },
-        validationSchema: Yup.object({
-            username: Yup
-                .string()
-                .max(255)
-                .required('El usuario es obligatorio'),
-            password: Yup
-                .string()
-                .max(255)
-                .required('La contraseña es obligatoria')
-        }),
-        onSubmit: async (values, helpers) => {
-            try {
-                // let { data } = await loginService(values.username, values.password);
-                navigate('/dashboard/welcome');
-                localStorage.setItem('username', data.username)
-                localStorage.setItem('userid', data.userid)
-                localStorage.setItem('token', data.token)
-                localStorage.setItem('expiration', data.expiration)
-            } catch (err) {
-                helpers.setStatus({ success: false });
-                helpers.setErrors({ submit: err.message });
-                helpers.setSubmitting(false);
-            }
-        }
-    });
+    // const formik = useFormik({
+    //     initialValues: {
+    //         username: '',
+    //         password: '',
+    //         submit: null
+    //     },
+    //     validationSchema: Yup.object({
+    //         username: Yup
+    //             .string()
+    //             .max(255)
+    //             .required('El usuario es obligatorio'),
+    //         password: Yup
+    //             .string()
+    //             .max(255)
+    //             .required('La contraseña es obligatoria')
+    //     }),
+    //     onSubmit: async (values, helpers) => {
+    //         try {
+    //             // let { data } = await loginService(values.username, values.password);
+    //             navigate('/dashboard/welcome');
+    //             localStorage.setItem('username', data.username)
+    //             localStorage.setItem('userid', data.userid)
+    //             localStorage.setItem('token', data.token)
+    //             localStorage.setItem('expiration', data.expiration)
+    //         } catch (err) {
+    //             helpers.setStatus({ success: false });
+    //             helpers.setErrors({ submit: err.message });
+    //             helpers.setSubmitting(false);
+    //         }
+    //     }
+    // });
 
     return (
         <Container>
@@ -163,7 +186,7 @@ export const MantenimientoClientes = () => {
                             variant="contained"
                             startIcon={<SaveIcon />}
                             label="Guardar"
-                            onClick={createUser}
+                            onClick={params.id ? updateUserData : createUser}
                         />
                         <CustomButton
                             variant="contained"
@@ -238,14 +261,10 @@ export const MantenimientoClientes = () => {
                     <CustomDatePicker
                         label="Fecha de nacimiento"
                         value={formValues.fNacimiento}
-                        // fullWidth
-                        // name="fNacimiento"
                         onChange={onBDateChange}
                     />
                     <CustomDatePicker
                         label="Fecha de afiliacion"
-                        // fullWidth
-                        // name="fAfiliacion"
                         value={formValues.fAfiliacion}
                         onChange={onADateChange}
                     />

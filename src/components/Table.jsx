@@ -14,8 +14,9 @@ import {
 } from "@mui/material";
 import { blue } from "@mui/material/colors"
 import { useSnackbar } from "notistack"
+import { useNavigate } from "react-router-dom";
 
-import { listClients, deleteClient } from "../services/client.service";
+import { listClients, deleteClient, getClient } from "../services/client.service";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -40,6 +41,7 @@ export default function CustomizedTables() {
     const [clients, setClients] = useState([])
 
     const { enqueueSnackbar } = useSnackbar()
+    const navigate = useNavigate()
 
     let getClientsList = async () => {
         let clientsList = await listClients('', '', localStorage.getItem('userid'))
@@ -49,6 +51,10 @@ export default function CustomizedTables() {
     useEffect(() => {
         getClientsList()
     }, []);
+
+    const onEditClient = async (id) => {
+        navigate(`/dashboard/edit/${id}`)
+    }
 
     const onDeleteClient = async (id) => {
         // eslint-disable-next-line no-restricted-globals
@@ -78,7 +84,7 @@ export default function CustomizedTables() {
                                     {nombre} {apellidos}
                                 </StyledTableCell>
                                 <StyledTableCell align="right">
-                                    <IconButton>
+                                    <IconButton onClick={() => onEditClient(id)}>
                                         <EditIcon />
                                     </IconButton>
                                     <IconButton onClick={() => onDeleteClient(id)}>

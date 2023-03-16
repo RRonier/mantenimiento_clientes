@@ -19,6 +19,6 @@ export default function CustomDatePicker(props) {
                         width: '100%',
                     }} {...props} />
             </DemoContainer>
-        </LocalizationProvider>
+        </LocalizationProvider >
     );
 }

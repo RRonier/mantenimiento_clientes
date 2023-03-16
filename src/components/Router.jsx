@@ -33,18 +33,19 @@ export const Router = createBrowserRouter([
             },
             {
                 path: "consulta",
-                element: <ProtectedRoute>
-                    <ConsultaClientes />
-                </ProtectedRoute>,
+                element: <ConsultaClientes />,
                 errorElement: <ErrorPage />,
             },
             {
                 path: "mantenimiento",
-                element: <ProtectedRoute>
-                    <MantenimientoClientes />
-                </ProtectedRoute >,
+                element: <MantenimientoClientes />,
                 errorElement: <ErrorPage />,
             },
+            {
+                path: "edit/:id",
+                element: <MantenimientoClientes />,
+                errorElement: <ErrorPage />,
+            }
         ]
     },
 ]);

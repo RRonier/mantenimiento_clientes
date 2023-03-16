@@ -1,7 +1,6 @@
 import { API } from "../utils/api";
 
 const token = localStorage.getItem("token");
-console.log("token: " + token);
 const config = {
     headers: { Authorization: `Bearer ${token}` },
 };
@@ -46,4 +45,34 @@ export const addClient = ({
 
 export const deleteClient = (IdCliente) => API.delete(`/api/Cliente/Eliminar/${IdCliente}`, config)
 
-export const getClient = (IdCliente) => API.get(`/api/Cliente/Obtener/${IdCliente}`)
+export const getClient = (IdCliente) => API.get(`/api/Cliente/Obtener/${IdCliente}`, config)
+
+export const updateClient = ({
+    nombre,
+    apellidos,
+    identificacion,
+    celular,
+    otroTelefono,
+    direccion,
+    fNacimiento,
+    fAfiliacion,
+    sexo,
+    resennaPersonal,
+    imagen,
+    interesFK,
+    usuarioId
+}) => API.post('/api/Cliente/Actualizar', {
+    nombre,
+    apellidos,
+    identificacion,
+    celular,
+    otroTelefono,
+    direccion,
+    fNacimiento,
+    fAfiliacion,
+    sexo,
+    resennaPersonal,
+    imagen,
+    interesFK,
+    usuarioId
+}, config)
