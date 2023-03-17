@@ -1,20 +1,19 @@
 
 import { createContext, useState } from "react"
-import { loginService, signUpService } from "../services/auth.service"
+import { loginService } from "../services/auth.service"
+import { useSnackbar } from "notistack";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState({
-        name: "",
-        id: "",
+        name: localStorage.getItem('username'),
+        id: localStorage.getItem('userid')
     });
+    const { enqueueSnackbar } = useSnackbar()
     const [isLogged, setIsLogged] = useState(false)
 
     const loginContext = async (username, password) => {
-        // setLoginPending(true)
-        // setLoginSuccess(false)
-        // setLoginError(null)
         try {
             let { data } = await loginService(username, password)
             setUser({ name: data.username, id: data.userid })
@@ -23,9 +22,8 @@ export const AuthProvider = ({ children }) => {
             localStorage.setItem('userid', data.userid)
             localStorage.setItem('token', data.token)
             localStorage.setItem('expiration', data.expiration)
-            // setLoginSuccess(true)
         } catch (error) {
-            // setLoginError(error)
+            enqueueSnackbar("Ha habido un error al intentar iniciar sesion", { variant: 'error' })
         }
     }
 
