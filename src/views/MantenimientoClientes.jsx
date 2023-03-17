@@ -7,7 +7,6 @@ import {
     Typography,
     TextField,
     Divider,
-    Box,
     FormControl,
     InputLabel,
     Select,
@@ -56,17 +55,20 @@ export const MantenimientoClientes = () => {
     }
 
     const createUser = async () => {
-        await addClient(
-            {
-                ...formValues,
-                fNacimiento: dayjs(formValues.fNacimiento).toISOString(),
-                fAfiliacion: dayjs(formValues.fAfiliacion).toISOString(),
-                imagen: "string"
-            })
-        navigate("/dashboard/consulta")
-        enqueueSnackbar('Cliente agregado con exito', { variant: 'success' })
+        try {
+            await addClient(
+                {
+                    ...formValues,
+                    fNacimiento: dayjs(formValues.fNacimiento).toISOString(),
+                    fAfiliacion: dayjs(formValues.fAfiliacion).toISOString(),
+                    imagen: "string"
+                })
+            navigate("/dashboard/consulta")
+            enqueueSnackbar('Cliente agregado con exito', { variant: 'success' })
+        } catch (err) {
+            enqueueSnackbar('Ha habido un problema con su peticion', { variant: 'error' })
+        }
     }
-    //----------------------------------------------------------------------
     const onBDateChange = (newValue) => {
         setFormValues((state) => ({
             ...state,
@@ -81,35 +83,54 @@ export const MantenimientoClientes = () => {
     }
 
     const getInterestsList = async () => {
-        let interestsList = await getInteresList()
-        setInterestsList(interestsList.data)
+        try {
+            let interestsList = await getInteresList()
+            setInterestsList(interestsList.data)
+        } catch (err) {
+            enqueueSnackbar('Ha habido un problema con su peticion', { variant: 'error' })
+        }
     }
 
     const getUserData = async () => {
-        let clientData = await getClient(params.id)
-        console.log(clientData.data)
-        let fNacimiento = dayjs(clientData.data.fNacimiento).format('YYYY-MM-DD')
-        let fAfiliacion = dayjs(clientData.data.fAfiliacion).format('YYYY-MM-DD')
-        console.log(user.id)
-        setFormValues({
-            ...clientData.data,
-            celular: clientData.data.telefonoCelular,
-            resennaPersonal: clientData.data.resenaPersonal,
-            interesFK: clientData.data.interesesId,
-            fNacimiento: dayjs(fNacimiento),
-            fAfiliacion: dayjs(fAfiliacion),
-            usuarioId: user.id
-        })
+        try {
+            let clientData = await getClient(params.id)
+            let fNacimiento = dayjs(clientData.data.fNacimiento).format('YYYY-MM-DD')
+            let fAfiliacion = dayjs(clientData.data.fAfiliacion).format('YYYY-MM-DD')
+            setFormValues({
+                ...clientData.data,
+                celular: clientData.data.telefonoCelular,
+                resennaPersonal: clientData.data.resenaPersonal,
+                interesFK: clientData.data.interesesId,
+                fNacimiento: dayjs(fNacimiento),
+                fAfiliacion: dayjs(fAfiliacion),
+                usuarioId: user.id
+            })
+        } catch (err) {
+            enqueueSnackbar('Ha habido un problema con su peticion', { variant: 'error' })
+        }
     }
 
     const updateUserData = async () => {
-        await updateClient(formValues)
-        enqueueSnackbar('Usuario actualizado correctamente', { variant: 'success' })
+        try {
+            await updateClient({
+                ...formValues,
+                id: params.id,
+                interesFK: formValues.interesFK,
+                usuarioId: user.id
+            })
+            console.log({ ...formValues, id: params.id })
+            enqueueSnackbar('Usuario actualizado correctamente', { variant: 'success' })
+            navigate(-1)
+        } catch (err) {
+            enqueueSnackbar('Ha habido un problema con su peticion de actualizar', { variant: 'error' })
+        }
     }
 
     useEffect(() => {
         getInterestsList()
-        getUserData()
+        if (params.id) {
+            getUserData()
+        }
     }, [])
 
     // const formik = useFormik({
