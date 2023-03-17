@@ -10,6 +10,7 @@ export const AuthProvider = ({ children }) => {
         name: localStorage.getItem('username'),
         id: localStorage.getItem('userid')
     });
+    const [profileImage, setProfileImage] = useState()
     const { enqueueSnackbar } = useSnackbar()
     const [isLogged, setIsLogged] = useState(false)
 
@@ -36,7 +37,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, loginContext, logout, isLogged }}>
+        <AuthContext.Provider value={{ user, loginContext, logout, isLogged, profileImage, setProfileImage }}>
             {children}
         </AuthContext.Provider>
     );
