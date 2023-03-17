@@ -12,8 +12,11 @@ export const ConsultaClientes = () => {
     const navigate = useNavigate()
 
     const onGetClient = async (clientId) => {
-        let client = await getClient(clientId)
-        console.log(client)
+        try {
+            await getClient(clientId)
+        } catch (err) {
+            enqueueSnackbar('Ha habido un problema con su peticion', { variant: 'error' })
+        }
     }
 
     return (
@@ -21,13 +24,13 @@ export const ConsultaClientes = () => {
             <Paper elevation={1} sx={{
                 width: '90%',
                 height: 'fit-content',
-                marginTop: 3
+                marginTop: 3,
+                paddingLeft: 3,
+                paddingRight: 3,
             }}>
                 <div style={{
                     display: 'flex',
                     justifyContent: 'space-between',
-                    paddingLeft: 15,
-                    paddingRight: 15,
                     paddingTop: 10,
                     paddingBottom: 10
                 }}>
@@ -54,8 +57,6 @@ export const ConsultaClientes = () => {
                 <div style={{
                     display: 'flex',
                     justifyContent: 'space-between',
-                    paddingLeft: 15,
-                    paddingRight: 15,
                     paddingTop: 10,
                     paddingBottom: 10,
                 }}>
@@ -76,8 +77,12 @@ export const ConsultaClientes = () => {
                         variant='outlined'
                         fullWidth
                     />
-                    <IconButton aria-label="search" onClick={onGetClient}>
-                        <SearchIcon style={{
+                    <IconButton
+                        aria-label="search"
+                        onClick={onGetClient}
+                        sx={{ marginLeft: 1 }}
+                    >
+                        <SearchIcon sx={{
                             border: '1px solid black',
                             borderRadius: '50%',
                             padding: '20%'
@@ -87,6 +92,6 @@ export const ConsultaClientes = () => {
                 <Divider />
                 <Table />
             </Paper >
-        </Container>
+        </Container >
     )
 }
