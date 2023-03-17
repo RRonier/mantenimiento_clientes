@@ -7,6 +7,7 @@ import { CustomButton } from '../components/CustomButton';
 import { useNavigate } from 'react-router-dom';
 import { getClient } from '../services/client.service';
 import { enqueueSnackbar } from 'notistack';
+import { grey } from '@mui/material/colors';
 
 export const ConsultaClientes = () => {
     const navigate = useNavigate()
@@ -83,7 +84,7 @@ export const ConsultaClientes = () => {
                         sx={{ marginLeft: 1 }}
                     >
                         <SearchIcon sx={{
-                            border: '1px solid black',
+                            border: `1px solid ${grey[500]}`,
                             borderRadius: '50%',
                             padding: '20%'
                         }} />
