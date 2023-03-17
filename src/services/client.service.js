@@ -48,6 +48,7 @@ export const deleteClient = (IdCliente) => API.delete(`/api/Cliente/Eliminar/${I
 export const getClient = (IdCliente) => API.get(`/api/Cliente/Obtener/${IdCliente}`, config)
 
 export const updateClient = ({
+    id,
     nombre,
     apellidos,
     identificacion,
@@ -62,6 +63,7 @@ export const updateClient = ({
     interesFK,
     usuarioId
 }) => API.post('/api/Cliente/Actualizar', {
+    id,
     nombre,
     apellidos,
     identificacion,
