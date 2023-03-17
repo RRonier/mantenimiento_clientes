@@ -31,7 +31,7 @@ function CustomDrawer({ user }) {
             >
                 <ProfileImage width={200} height={200} />
             </List>
-            <Typography sx={{ textAlign: "center" }}>
+            <Typography sx={{ textAlign: "center", fontWeight: 'bold' }}>
                 {user}
             </Typography>
             <Divider />
@@ -43,19 +43,25 @@ function CustomDrawer({ user }) {
             <Divider />
             <List>
                 <ListItem disablePadding>
-                    <ListItemButton onClick={() => navigate("/dashboard/welcome")}>
-                        <ListItemIcon>
-                            <Icon color="primary">IN</Icon>
-                        </ListItemIcon>
-                        <ListItemText primary={"Inicio"} />
+                    <ListItemButton
+                        onClick={() => navigate("/dashboard/welcome")}
+                    >
+                        <Typography variant="p" sx={{ marginRight: 2, color: 'cyan', fontSize: 20 }}>
+                            IN
+                        </Typography>
+                        <Typography variant="p">
+                            INICIO
+                        </Typography>
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
                     <ListItemButton onClick={() => navigate("/dashboard/consulta")}>
-                        <ListItemIcon>
-                            <Icon color="primary">CC</Icon>
-                        </ListItemIcon>
-                        <ListItemText primary={"Consulta Clientes"} />
+                        <Typography variant="p" sx={{ marginRight: 2, color: 'cyan', fontSize: 20 }}>
+                            CC
+                        </Typography>
+                        <Typography variant="p">
+                            Consulta clientes
+                        </Typography>
                     </ListItemButton>
                 </ListItem>
             </List>
