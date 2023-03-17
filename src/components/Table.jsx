@@ -44,8 +44,12 @@ export default function CustomizedTables() {
     const navigate = useNavigate()
 
     let getClientsList = async () => {
-        let clientsList = await listClients('', '', localStorage.getItem('userid'))
-        setClients(clientsList.data)
+        try {
+            let clientsList = await listClients('', '', localStorage.getItem('userid'))
+            setClients(clientsList.data)
+        } catch (err) {
+            enqueueSnackbar('Ha habido un problema con su peticion', { variant: 'error' })
+        }
     }
 
     useEffect(() => {
@@ -60,9 +64,13 @@ export default function CustomizedTables() {
         // eslint-disable-next-line no-restricted-globals
         const decision = window.confirm('Seguro deseas eliminar a este cliente?')
         if (decision === true) {
-            await deleteClient(id)
-            getClientsList()
-            enqueueSnackbar('Cliente eliminado con exito', { variant: 'success' })
+            try {
+                await deleteClient(id)
+                getClientsList()
+                enqueueSnackbar('Cliente eliminado con exito', { variant: 'success' })
+            } catch (err) {
+                enqueueSnackbar('Ha habido un problema con su peticion', { variant: 'error' })
+            }
         }
     }
     return (
