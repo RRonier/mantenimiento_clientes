@@ -1,4 +1,3 @@
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import {
     Typography,
     Toolbar,
@@ -13,6 +12,7 @@ import {
 } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
+import ProfileImage from "./ProfileImage";
 
 const drawerWidth = 240;
 
@@ -29,7 +29,7 @@ function CustomDrawer({ user }) {
                     justifyContent: "center",
                 }}
             >
-                <AccountCircleIcon style={{ fontSize: 200 }} />
+                <ProfileImage width={200} height={200} />
             </List>
             <Typography sx={{ textAlign: "center" }}>
                 {user}
