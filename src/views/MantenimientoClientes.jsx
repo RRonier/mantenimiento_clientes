@@ -24,12 +24,13 @@ import dayjs from 'dayjs';
 import * as Yup from 'yup';
 import { AuthContext } from '../context/auth.context';
 import { enqueueSnackbar } from 'notistack';
+import ProfileImage from "../components/ProfileImage"
 
 export const MantenimientoClientes = () => {
     const [interestsList, setInterestsList] = useState([])
     const navigate = useNavigate();
     const params = useParams()
-    const { user } = useContext(AuthContext)
+    const { user, profileImage } = useContext(AuthContext)
 
     const [formValues, setFormValues] = useState({
         nombre: "",
@@ -188,16 +189,8 @@ export const MantenimientoClientes = () => {
                     }}
                 >
                     <div style={{ display: "flex", alignItems: "flex-end" }}>
-                        <PersonIcon
-                            style={{
-                                fontSize: 40,
-                                marginRight: 5,
-                                color: grey[600],
-                                border: `1px solid ${grey[400]}`,
-                                borderRadius: '50%'
-                            }}
-                        />
-                        <Typography variant="h6">Mantenimiento de clientes</Typography>
+                        <ProfileImage image={profileImage} />
+                        <Typography variant="h6" sx={{ marginLeft: 1 }}>Mantenimiento de clientes</Typography>
                     </div>
                     <div>
                         <CustomButton
