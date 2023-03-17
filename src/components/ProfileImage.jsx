@@ -1,16 +1,17 @@
-import { useRef, useState } from 'react';
+import { useRef, useContext } from 'react';
 import Avatar from '@mui/material/Avatar';
+import { AuthContext } from '../context/auth.context';
 
-function ProfileImage(props) {
+function ProfileImage({ width, height }) {
     const inputRef = useRef(null);
-    const [image, setImage] = useState(props.image || null)
+    const { profileImage, setProfileImage } = useContext(AuthContext)
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
         const reader = new FileReader();
         reader.onload = () => {
             const image = reader.result;
-            setImage(image);
+            setProfileImage(image);
             console.log(image)
         };
         reader.readAsDataURL(file);
@@ -22,7 +23,10 @@ function ProfileImage(props) {
 
     return (
         <>
-            <Avatar alt="Profile Image" src={image} onClick={handleClick} />
+            <Avatar sx={{
+                width: width,
+                height: height,
+            }} alt="Profile Image" src={profileImage} onClick={handleClick} />
             <input type="file" accept="image/*" ref={inputRef} onChange={handleImageChange} style={{ display: 'none' }} />
         </>
     );
