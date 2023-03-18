@@ -12,7 +12,7 @@ function ProfileImage({ width, height }) {
         reader.onload = () => {
             const image = reader.result;
             setProfileImage(image);
-            console.log(image)
+            localStorage.setItem('profileImage', image);
         };
         reader.readAsDataURL(file);
     };
@@ -26,7 +26,7 @@ function ProfileImage({ width, height }) {
             <Avatar sx={{
                 width: width,
                 height: height,
-            }} alt="Profile Image" src={profileImage} onClick={handleClick} />
+            }} alt="Profile Image" src={profileImage || localStorage.getItem('profileImage')} onClick={handleClick} />
             <input type="file" accept="image/*" ref={inputRef} onChange={handleImageChange} style={{ display: 'none' }} />
         </>
     );
