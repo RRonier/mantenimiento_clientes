@@ -1,7 +1,7 @@
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { Box, Button, Link, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, Stack, TextField, Typography } from '@mui/material';
 import { signUpService } from '../services/auth.service';
+import { registerFormValidator } from '../validations/validators';
 
 const Register = () => {
     const formik = useFormik({
@@ -11,25 +11,7 @@ const Register = () => {
             password: '',
             submit: null
         },
-        validationSchema: Yup.object({
-            email: Yup
-                .string()
-                .email('El correo debe ser valido')
-                .max(255)
-                .required('El correo es obligatorio'),
-            username: Yup
-                .string()
-                .max(255)
-                .required('El nombre es obligatorio'),
-            password: Yup
-                .string()
-                .max(255)
-                .matches(
-                    /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{10,}$/,
-                    'La contraseña debe tener al menos 10 characteres, una letra minuscula, una letra mayuscula, y un numero'
-                )
-                .required('La contraseña es obligatoria')
-        }),
+        validationSchema: registerFormValidator,
         onSubmit: async (values, helpers) => {
             try {
                 await signUpService(values.username, values.email, values.password)

@@ -16,7 +16,7 @@ import { blue } from "@mui/material/colors"
 import { useSnackbar } from "notistack"
 import { useNavigate } from "react-router-dom";
 
-import { listClients, deleteClient, getClient } from "../services/client.service";
+import { listClients, deleteClient } from "../services/client.service";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -37,16 +37,21 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
-export default function CustomizedTables() {
-    const [clients, setClients] = useState([])
+export default function CustomizedTables({ clientData }) {
+    const [clientsList, setClientsList] = useState([])
 
     const { enqueueSnackbar } = useSnackbar()
     const navigate = useNavigate()
 
     let getClientsList = async () => {
         try {
-            let clientsList = await listClients('', '', localStorage.getItem('userid'))
-            setClients(clientsList.data)
+            let clients = await listClients(clientData.identificacion, clientData.nombre, localStorage.getItem('userid'))
+            enqueueSnackbar('Resultados cargados con exito!', { variant: 'success' })
+            if (!clients.data.length) {
+                enqueueSnackbar('No se encontraron resultados', { variant: 'error' })
+            } else {
+                setClientsList(clients.data)
+            }
         } catch (err) {
             enqueueSnackbar('Ha habido un problema con su peticion', { variant: 'error' })
         }
@@ -54,7 +59,7 @@ export default function CustomizedTables() {
 
     useEffect(() => {
         getClientsList()
-    }, []);
+    }, [clientData]);
 
     const onEditClient = async (id) => {
         navigate(`/dashboard/edit/${id}`)
@@ -85,7 +90,7 @@ export default function CustomizedTables() {
                         </StyledTableRow>
                     </TableHead>
                     <TableBody>
-                        {clients && clients.map(({ id, nombre, apellidos, identificacion }) => (
+                        {clientsList && clientsList.map(({ id, nombre, apellidos, identificacion }) => (
                             <StyledTableRow key={id}>
                                 <StyledTableCell align="left">{identificacion}</StyledTableCell>
                                 <StyledTableCell>

@@ -1,6 +1,5 @@
 import { useContext } from 'react'
 import { useFormik } from 'formik'
-import * as Yup from 'yup';
 import {
     Box,
     Button,
@@ -12,9 +11,10 @@ import {
     Checkbox
 } from '@mui/material';
 
+import { loginFormValidator } from '../validations/validators';
+
 import { useNavigate } from 'react-router-dom'
 
-// import { loginService } from '../services/auth.service';
 import { AuthContext } from '../context/auth.context';
 
 const Login = () => {
@@ -27,16 +27,7 @@ const Login = () => {
             password: '',
             submit: null
         },
-        validationSchema: Yup.object({
-            username: Yup
-                .string()
-                .max(255)
-                .required('El usuario es obligatorio'),
-            password: Yup
-                .string()
-                .max(255)
-                .required('La contraseña es obligatoria')
-        }),
+        validationSchema: loginFormValidator,
         onSubmit: async (values, helpers) => {
             try {
                 await loginContext(values.username, values.password)
@@ -94,8 +85,8 @@ const Login = () => {
                                     value={formik.values.username}
                                 />
                                 <TextField
-                                    error={!!(formik.touched.password && formik.errors.password)}
                                     fullWidth
+                                    error={!!(formik.touched.password && formik.errors.password)}
                                     helperText={formik.touched.password && formik.errors.password}
                                     label="Contraseña *"
                                     name="password"
