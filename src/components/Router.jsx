@@ -4,7 +4,6 @@ import { ErrorPage } from '../views/ErrorPage';
 import { WelcomePage } from '../views/Welcome';
 import { ConsultaClientes } from '../views/ConsultaClientes';
 import { MantenimientoClientes } from '../views/MantenimientoClientes';
-import { ProtectedRoute } from "./ProtectedRoute"
 import Login from "../views/Login"
 
 import {
@@ -29,12 +28,16 @@ export const Router = createBrowserRouter([
     {
         path: "/dashboard",
         element: <Home />,
+        loader: () => {
+            if (!localStorage.getItem('username')) {
+                throw redirect('/')
+            }
+            return null
+        },
         children: [
             {
                 path: "welcome",
-                element: <ProtectedRoute>
-                    <WelcomePage />
-                </ProtectedRoute>,
+                element: <WelcomePage />,
                 errorElement: <ErrorPage />,
             },
             {
