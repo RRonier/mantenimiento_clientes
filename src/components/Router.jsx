@@ -8,13 +8,19 @@ import { ProtectedRoute } from "./ProtectedRoute"
 import Login from "../views/Login"
 
 import {
-    createBrowserRouter
+    createBrowserRouter, redirect
 } from "react-router-dom";
 
 export const Router = createBrowserRouter([
     {
         path: "/",
         element: <Login />,
+        loader: () => {
+            if (localStorage.getItem('username')) {
+                throw redirect('/dashboard/welcome')
+            }
+            return null
+        }
     },
     {
         path: "/register",
