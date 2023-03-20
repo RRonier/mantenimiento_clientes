@@ -12,13 +12,11 @@ import {
 } from '@mui/material';
 
 import { loginFormValidator } from '../validations/validators';
-
 import { useNavigate } from 'react-router-dom'
-
 import { AuthContext } from '../context/auth.context';
 
 const Login = () => {
-    const { user, loginContext } = useContext(AuthContext)
+    const { loginContext } = useContext(AuthContext)
     const navigate = useNavigate()
 
     const formik = useFormik({

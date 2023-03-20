@@ -169,14 +169,12 @@ export const MantenimientoClientes = () => {
                                 startIcon={<SaveIcon />}
                                 label="Guardar"
                                 type="submit"
-                            // onClick={params.id ? updateUserData : createUser}
-                            // onClick={testValues}
                             />
                             <CustomButton
                                 variant="contained"
                                 startIcon={<KeyboardBackspaceIcon />}
                                 label="Regresar"
-                                onClick={() => navigate("/dashboard/welcome")}
+                                onClick={() => navigate("/dashboard/consulta")}
                             />
                         </div>
                     </div>
