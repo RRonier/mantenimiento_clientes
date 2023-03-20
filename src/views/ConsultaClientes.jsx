@@ -6,8 +6,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import Table from "../components/Table"
 import { CustomButton } from '../components/CustomButton';
 import { useNavigate } from 'react-router-dom';
-import { getClient } from '../services/client.service';
-import { enqueueSnackbar } from 'notistack';
 import { grey } from '@mui/material/colors';
 import { useFormik } from 'formik';
 import { findClientsFormValidator } from '../validations/validators';
@@ -65,7 +63,7 @@ export const ConsultaClientes = () => {
                                 variant='contained'
                                 startIcon={<KeyboardBackspaceIcon />}
                                 label="Regresar"
-                                onClick={() => navigate('/dashboard/welcome')}
+                                onClick={() => navigate('/dashboard/welcome', { replace: true })}
                             />
                         </div>
                     </div>

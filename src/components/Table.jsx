@@ -46,7 +46,6 @@ export default function CustomizedTables({ clientData }) {
     let getClientsList = async () => {
         try {
             let clients = await listClients(clientData.identificacion, clientData.nombre, localStorage.getItem('userid'))
-            enqueueSnackbar('Resultados cargados con exito!', { variant: 'success' })
             if (!clients.data.length) {
                 enqueueSnackbar('No se encontraron resultados', { variant: 'error' })
             } else {
