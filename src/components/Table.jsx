@@ -11,6 +11,7 @@ import {
     TableBody,
     Table,
     Paper,
+    CircularProgress
 } from "@mui/material";
 import { blue } from "@mui/material/colors"
 import { useSnackbar } from "notistack"
@@ -80,33 +81,44 @@ export default function CustomizedTables({ clientData }) {
     return (
         <>
             <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                    <TableHead>
-                        <StyledTableRow>
-                            <StyledTableCell>Identificacion</StyledTableCell>
-                            <StyledTableCell align="left">Nombre Completo</StyledTableCell>
-                            <StyledTableCell align="left">Acciones</StyledTableCell>
-                        </StyledTableRow>
-                    </TableHead>
-                    <TableBody>
-                        {clientsList && clientsList.map(({ id, nombre, apellidos, identificacion }) => (
-                            <StyledTableRow key={id}>
-                                <StyledTableCell align="left">{identificacion}</StyledTableCell>
-                                <StyledTableCell>
-                                    {nombre} {apellidos}
-                                </StyledTableCell>
-                                <StyledTableCell align="right">
-                                    <IconButton onClick={() => onEditClient(id)}>
-                                        <EditIcon />
-                                    </IconButton>
-                                    <IconButton onClick={() => onDeleteClient(id)}>
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </StyledTableCell>
+                {!clientsList.length ?
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: '100%',
+                        height: '50vh'
+                    }}>
+                        <CircularProgress color="success" size={100} />
+                    </div> :
+                    <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                        <TableHead>
+                            <StyledTableRow>
+                                <StyledTableCell>Identificacion</StyledTableCell>
+                                <StyledTableCell align="left">Nombre Completo</StyledTableCell>
+                                <StyledTableCell align="left">Acciones</StyledTableCell>
                             </StyledTableRow>
-                        ))}
-                    </TableBody>
-                </Table>
+                        </TableHead>
+                        <TableBody>
+                            {clientsList && clientsList.map(({ id, nombre, apellidos, identificacion }) => (
+                                <StyledTableRow key={id}>
+                                    <StyledTableCell align="left">{identificacion}</StyledTableCell>
+                                    <StyledTableCell>
+                                        {nombre} {apellidos}
+                                    </StyledTableCell>
+                                    <StyledTableCell align="right">
+                                        <IconButton onClick={() => onEditClient(id)}>
+                                            <EditIcon />
+                                        </IconButton>
+                                        <IconButton onClick={() => onDeleteClient(id)}>
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </StyledTableCell>
+                                </StyledTableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                }
             </TableContainer>
         </>
     );
